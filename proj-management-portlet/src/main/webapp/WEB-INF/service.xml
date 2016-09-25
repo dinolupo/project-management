@@ -1,0 +1,67 @@
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder package-path="io.github.dinolupo">
+	<namespace>PM</namespace>
+	<entity name="Project" local-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="projectId" type="long" primary="true"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="name" type="String"></column>
+        <column name="description" type="String"></column>
+        <column name="startDate" type="Date"></column>
+        <column name="endDate" type="Date"></column>
+        <column name="active" type="boolean"></column>
+        <finder name="GroupId" return-type="Collection">
+            <finder-column name="groupId"></finder-column>
+        </finder>
+        <finder name="Name" return-type="Collection">
+            <finder-column name="name"></finder-column>
+            <finder-column name="groupId"></finder-column>
+        </finder>
+	</entity>
+	<entity name="Entry" local-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="entryId" type="long" primary="true"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="name" type="String"></column>
+        <column name="value" type="String"></column>
+        <column name="projectId" type="long"></column>
+        <finder name="P_G" return-type="Collection">
+            <finder-column name="projectId"></finder-column>
+            <finder-column name="groupId"></finder-column>
+        </finder>
+	</entity>
+	<exceptions>
+        <exception>ProjectName</exception>
+        <exception>ProjectStartDate</exception>
+        <exception>ProjectDatesCoherence</exception>
+        <exception>EntryName</exception>
+        <exception>EntryValue</exception>
+    </exceptions>
+</service-builder>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="io.github.dinolupo.service.EntryLocalService" class="io.github.dinolupo.service.impl.EntryLocalServiceImpl" />
+	<bean id="io.github.dinolupo.service.EntryService" class="io.github.dinolupo.service.impl.EntryServiceImpl" />
+	<bean id="io.github.dinolupo.service.persistence.EntryPersistence" class="io.github.dinolupo.service.persistence.EntryPersistenceImpl" parent="basePersistence" />
+	<bean id="io.github.dinolupo.service.ProjectLocalService" class="io.github.dinolupo.service.impl.ProjectLocalServiceImpl" />
+	<bean id="io.github.dinolupo.service.ProjectService" class="io.github.dinolupo.service.impl.ProjectServiceImpl" />
+	<bean id="io.github.dinolupo.service.persistence.ProjectPersistence" class="io.github.dinolupo.service.persistence.ProjectPersistenceImpl" parent="basePersistence" />
+</beans>
