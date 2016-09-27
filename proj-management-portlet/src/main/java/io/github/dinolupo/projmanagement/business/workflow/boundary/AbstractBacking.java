@@ -11,7 +11,7 @@ abstract class AbstractBacking {
 	protected static final String SUCCESS_INFO_MSG_ID = "your-request-processed-successfully";
 	
 	public void addGlobalSuccessInfoMessage() {
-	    LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
+		LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
 	    liferayFacesContext.addGlobalSuccessInfoMessage();
 	}
 

@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<f:view
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:alloy="http://liferay.com/faces/alloy"
+>
+
+	<alloy:form>
+
+		<alloy:messages globalOnly="true" layout="table" />
+
+		<c:choose>
+			<c:when test="#{empty projectManagementBacking.selectedProject.name}">
+				<h3>#{i18n['new-project']}</h3>
+			</c:when>
+			<c:otherwise>
+				<h3>#{i18n['editing']}
+					#{projectManagementBacking.selectedProject.name}</h3>
+			</c:otherwise>
+		</c:choose>
+
+		<alloy:fieldset>
+			<alloy:field id="projectNameField" label="#{i18n['name']}">
+				<h:message for="projectName" />
+				<h:inputText id="projectName" required="true"
+					value="#{projectManagementBacking.selectedProject.name}">
+					<f:ajax render="projectNameField" />
+				</h:inputText>
+			</alloy:field>
+
+			<alloy:field id="projectDescriptionField"
+				label="#{i18n['description']}">
+				<h:message for="projectDescription" />
+				<h:inputText id="projectDescription" required="false"
+					value="#{projectManagementBacking.selectedProject.description}">
+					<f:ajax render="projectDescriptionField" />
+				</h:inputText>
+			</alloy:field>
+
+			<alloy:field id="projectStartdateField" label="#{i18n['startdate']}">
+				<h:message for="projectStartdate" />
+
+				<alloy:field label="#{i18n['birthday']}">
+					<alloy:inputDate id="projectStartdate" pattern="yyyy-MMM-dd hh:mm a Z" showOn="both"
+						value="#{projectManagementBacking.selectedProject.startDate}" />
+					<alloy:message for="projectStartdate" />
+				</alloy:field>
+
+				<!-- h:calendar id="projectStartdate" required="true"
+					value="#{projectManagementBacking.selectedProject.startDate}"
+					pattern="yyyy-MMM-dd hh:mm a Z" size="32">
+					f:ajax render="projectStartdateField" />
+					f:converter converterId="dateTimeConverter" />
+				</h:calendar-->
+
+			</alloy:field>
+
+			<alloy:field id="projectEnddateField" label="#{i18n['enddate']}">
+				<h:message for="projectEnddate" />
+				<h:inputText id="projectEnddate" required="true"
+					value="#{projectManagementBacking.selectedProject.endDate}">
+					<f:ajax render="projectEnddateField" />
+				</h:inputText>
+			</alloy:field>
+
+		</alloy:fieldset>
+		<h:commandButton action="#{projectManagementBacking.save}"
+			styleClass="btn btn-default" value="#{i18n['save']}">
+			<f:ajax execute="@form" render="@all" />
+		</h:commandButton>
+		<h:commandButton action="#{projectManagementBacking.cancel}"
+			styleClass="btn btn-default" value="#{i18n['cancel']}">
+			<f:ajax render="@all" />
+		</h:commandButton>
+	</alloy:form>
+
+
+</f:view>

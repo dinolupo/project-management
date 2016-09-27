@@ -1,5 +1,14 @@
+.proj_management_panel_bold {
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid #79d;
+    padding: 10px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
 .project_tab,.project_tab_active {
-    line-height: 20px;
+    line-height: 34px;
     padding: 8px 12px 3px 12px;
     }
 

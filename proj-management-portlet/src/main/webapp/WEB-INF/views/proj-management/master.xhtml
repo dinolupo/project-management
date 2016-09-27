@@ -1,75 +1,67 @@
 <?xml version="1.0"?>
 
-<f:view xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:alloy="http://liferay.com/faces/alloy">
 
 
 	<h:form>
-		<h:messages globalOnly="true" layout="table" />
-		<br />
-		<span class="project_tab"> <h:outputText value=" " />
-		</span>
-		<ui:repeat value="#{projectManagementBacking.projects}" var="project">
+		
+		<alloy:messages globalOnly="true" layout="table" />
+		
+		<span class="project_tab"> <h:outputText value=" " /></span>
 
+		<ui:repeat value="#{projectManagementBacking.projects}" var="project">
 			<span
 				class="#{(project.projectId == projectManagementBacking.selectedProject.projectId) ? 'project_tab_active' : 'project_tab'}">
-				<h:outputText
+				<alloy:outputText
 					rendered="#{project.projectId == projectManagementBacking.selectedProject.projectId}"
 					value="#{project.name}" /> 
-				<h:commandLink
+				<alloy:commandLink
 					action="#{projectManagementBacking.select(project)}"
 					immediate="true"
 					rendered="#{project.projectId != projectManagementBacking.selectedProject.projectId}"
 					value="#{project.name}">
 					<f:ajax render="@all" />
-				</h:commandLink>
-			</span>
+				</alloy:commandLink>
+			</span>	
 		</ui:repeat>
-		<span class="project_tab"> <h:outputText value=" " />
-		</span>
-		<br />
-		<br />
 		
-		<h:commandButton action="#{projectManagementBacking.add()}"
-			styleClass="btn btn-default" value=" #{i18n['add-project']} ">
-			<f:ajax render="@all" />
-		</h:commandButton>
-		<h:commandButton action="#{entryBacking.add}"
-			styleClass="btn btn-default" value=" #{i18n['add-entry']} ">
-			<f:ajax render="@all" />
-		</h:commandButton>
-		<br />
-		<br />
-
+		<span class="project_tab"> <alloy:outputText value=" " /></span>
+		
+		<alloy:buttonRow>
+			<alloy:commandButton action="#{projectManagementBacking.add}" styleClass="btn btn-primary" value="#{i18n['add-project']}" render="@all" />
+			<alloy:commandButton action="#{entryBacking.add}" styleClass="btn btn-primary" value="#{i18n['add-entry']}" render="@all"/>
+		</alloy:buttonRow>
+		
 		<c:choose>
 			<c:when test="#{empty projectManagementBacking.entries}">
-				<h:outputText value="#{i18n['no-entries-yet']}" />
-				<br />
+				<alloy:outputText value="#{i18n['no-entries-yet']}" />
 			</c:when>
 			<c:otherwise>
-				<h:dataTable
+				<alloy:dataTable
 					styleClass="table table-bordered table-hover table-striped"
 					rowClasses="table-cell "
 					value="#{projectManagementBacking.entries}" var="entry">
-					<h:column>
+					<alloy:column>
 						<f:facet name="header">
-							<h:outputText value="#{i18n['entry-value']}" />
+							<alloy:outputText value="#{i18n['entry-value']}" />
 						</f:facet>
 						<h:outputText value="#{entry.value}" />
-					</h:column>
-					<h:column>
+					</alloy:column>
+					<alloy:column>
 						<f:facet name="header">
-							<h:outputText value="#{i18n['entry-name']}" />
+							<alloy:outputText value="#{i18n['entry-name']}" />
 						</f:facet>
 						<h:outputText value="#{entry.name}" />
-					</h:column>
-				</h:dataTable>
+					</alloy:column>
+				</alloy:dataTable>
 			</c:otherwise>
 		</c:choose>
 	</h:form>
 
 
-</f:view>
+</ui:component>
