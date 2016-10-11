@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 
-<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:aui="http://liferay.com/faces/aui"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:alloy="http://liferay.com/faces/alloy">
 
-<h:form>
+<alloy:form>
     <c:choose>
         <c:when test="#{empty projectManagementBacking.selectedEntry.name}">
             <h3>#{i18n['new-entry']}</h3>
@@ -14,28 +17,29 @@
         </c:otherwise>
     </c:choose>
     
-    <aui:fieldset>
-    <aui:field id="entryNameField" label="#{i18n['name']}">
-        <h:message for="entryName" />
-        <h:inputText id="entryName" required="true" value="#{projectManagementBacking.selectedEntry.name}">
+    <alloy:fieldset>
+    <alloy:field id="entryNameField" label="#{i18n['name']}">
+        <alloy:inputText id="entryName" required="true" value="#{projectManagementBacking.selectedEntry.name}">
             <f:ajax render="entryNameField" />
-        </h:inputText>
-    </aui:field>
-    <aui:field id="entryMessageField" label="#{i18n['message']}">
-        <h:message for="entryMessage" />
-        <h:inputTextarea id="entryMessage" required="true" value="#{projectManagementBacking.selectedEntry.value}">
+        </alloy:inputText>
+        <alloy:message for="entryName" />
+    </alloy:field>
+    
+    <alloy:field id="entryMessageField" label="#{i18n['message']}">
+        <alloy:inputTextarea id="entryMessage" required="true" value="#{projectManagementBacking.selectedEntry.value}">
             <f:ajax render="entryMessageField" />
-        </h:inputTextarea>
-    </aui:field>
-</aui:fieldset>
+        </alloy:inputTextarea>
+        <alloy:message for="entryMessage" />
+    </alloy:field>
+</alloy:fieldset>
 
-<h:commandButton action="#{entryBacking.save}" styleClass="btn btn-default" value="#{i18n['save']}">
+<alloy:commandButton action="#{entryBacking.save}" styleClass="btn btn-default" value="#{i18n['save']}">
         <f:ajax execute="@form" render="@all" />
-    </h:commandButton>
-    <h:commandButton action="#{entryBacking.cancel}" immediate="true" styleClass="btn btn-default" value="#{i18n['cancel']}">
+    </alloy:commandButton>
+    <alloy:commandButton action="#{entryBacking.cancel}" immediate="true" styleClass="btn btn-default" value="#{i18n['cancel']}">
         <f:ajax render="@all" />
-    </h:commandButton>
-</h:form>
+    </alloy:commandButton>
+</alloy:form>
 
 
-</f:view>
+</ui:component>

@@ -1,21 +1,22 @@
 package io.github.dinolupo.projmanagement.business.workflow.boundary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import com.liferay.faces.portal.context.LiferayFacesContext;
+import com.liferay.faces.portal.context.LiferayPortletHelper;
+import com.liferay.faces.portal.context.LiferayPortletHelperFactory;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import io.github.dinolupo.model.Entry;
 import io.github.dinolupo.model.Project;
 import io.github.dinolupo.service.EntryLocalServiceUtil;
 import io.github.dinolupo.service.ProjectLocalServiceUtil;
-import io.github.dinolupo.service.persistence.EntryUtil;
 import io.github.dinolupo.service.persistence.ProjectUtil;
-import io.github.dinolupo.model.Entry;
 
 @ManagedBean
 @ViewScoped
@@ -43,21 +44,25 @@ public class ProjectManagementBacking extends AbstractBacking {
 	private boolean editingEntry;
 	
 	public void add() {
-		logger.warn("----------> add");
 	    setOriginalProject(getSelectedProject());
 
 	    Project project = ProjectUtil.create(0L);
-	    LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
-	    project.setGroupId(liferayFacesContext.getScopeGroupId());
+	    project.setGroupId(LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId());
 	    setSelectedProject(project);
 	    editProject();
 	}
-
+	
+	
+	public void editSelectedProject() {
+		logger.warn("selected project: " + selectedProject);
+		setOriginalProject(selectedProject);
+		editProject();
+	}
+	
 	public void cancel() {
 	    select(getOriginalProject());
 	}
 
-	
 	public void editEntry() {
 	    editingEntry = true;
 	    editingProject = false;
@@ -72,8 +77,8 @@ public class ProjectManagementBacking extends AbstractBacking {
 
 	    try {
 
-	        LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
-	        long scopeGroupId = liferayFacesContext.getScopeGroupId();
+	        LiferayPortletHelper liferayPortletHelper = LiferayPortletHelperFactory.getLiferayPortletHelperInstance();
+	        long scopeGroupId = liferayPortletHelper.getScopeGroupId();
 
 	        Project defaultProject = (Project)
 	            ProjectLocalServiceUtil.getFirstProjectByName(scopeGroupId, DEFAULT_PROJECT_NAME);
@@ -85,18 +90,9 @@ public class ProjectManagementBacking extends AbstractBacking {
 	            Project project = ProjectUtil.create(0L);
 	            project.setName(DEFAULT_PROJECT_NAME);
 	            project.setGroupId(scopeGroupId);
-	            project.setCompanyId(liferayFacesContext.getCompanyId());
-	            project.setUserId(liferayFacesContext.getUserId());	            
+	            project.setCompanyId(liferayPortletHelper.getCompanyId());
+	            project.setUserId(liferayPortletHelper.getUserId());	            
 	            ProjectLocalServiceUtil.addProject(project);
-	            
-	            // dino
-//	            Entry entry = EntryUtil.create(0L);
-//	            entry.setName("Entry Name Default");
-//	            entry.setValue("Entry Value Default");
-//	            entry.setProjectId(0L);	            
-//	            EntryLocalServiceUtil.addEntry(entry);
-//	            this.setSelectedEntry(entry);
-//	            this.editEntry();
 	            
 	        }
 	    }
@@ -113,10 +109,16 @@ public class ProjectManagementBacking extends AbstractBacking {
 	
 	public void save() {
 	    Project project = getSelectedProject();
-	    LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
-	    project.setCompanyId(liferayFacesContext.getCompanyId());
-	    project.setUserId(liferayFacesContext.getUserId());
-
+	    LiferayPortletHelper liferayPortletHelper = LiferayPortletHelperFactory.getLiferayPortletHelperInstance();
+	    project.setCompanyId(liferayPortletHelper.getCompanyId());
+	    project.setUserId(liferayPortletHelper.getUserId());
+	    project.setActive(true);
+	    Date now = new Date();
+	    project.setCreateDate(now);
+	    project.setModifiedDate(now);
+	    project.setUserName(liferayPortletHelper.getUser().getFullName());
+	    
+	    
 	    try {
 
 	        if (project.getProjectId() == 0) {
@@ -164,11 +166,38 @@ public class ProjectManagementBacking extends AbstractBacking {
 	    this.editingProject = editingProject;
 	}
 	
+	public void removeAllProjects() {
+		List<Project> projects = getProjects();
+		long scopeGroupId = LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId();
+		
+		for (Project project: projects) {
+			try {
+				List<Entry> entries = EntryLocalServiceUtil.getEntrys(project.getProjectId(), scopeGroupId);
+				for(Entry entry : entries) {
+					EntryLocalServiceUtil.deleteEntry(entry);
+				}
+				ProjectLocalServiceUtil.deleteProject(project);
+			} catch (SystemException e) {
+				logger.error(e);
+			}
+		}
+		createMainProject();
+		select(getSelectedProject());
+	}
+	
+	public void removeAllEntries() throws SystemException {
+		List<Entry> entries = getEntries();
+		for(Entry entry : entries) {
+			EntryLocalServiceUtil.deleteEntry(entry);
+		}
+		select(getSelectedProject());
+	}
 	
 	public List<Entry> getEntries() {
 
 	    if (entries == null) {
-	        long scopeGroupId = LiferayFacesContext.getInstance().getScopeGroupId();
+	    	
+	        long scopeGroupId = LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId();
 	        Project selectedProject = getSelectedProject();
 
 	        try {
@@ -202,7 +231,7 @@ public class ProjectManagementBacking extends AbstractBacking {
 	public List<Project> getProjects() {
 
 	    if (projects == null) {
-	        long scopeGroupId = LiferayFacesContext.getInstance().getScopeGroupId();
+	        long scopeGroupId = LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId();
 
 	        try {
 	            projects = new ArrayList<Project>();
@@ -242,7 +271,8 @@ public class ProjectManagementBacking extends AbstractBacking {
 	public Project getSelectedProject() {
 
 	    if (selectedProject == null) {
-	        long scopeGroupId = LiferayFacesContext.getInstance().getScopeGroupId();
+
+	    	long scopeGroupId = LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId();
 
 	        try {
 	            Project firstProjectByName =

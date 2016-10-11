@@ -11,7 +11,7 @@
 
 		<alloy:messages globalOnly="true" layout="table" />
 
-		<alloy:fieldset legend="#{(empty projectManagementBacking.selectedProject.name) ? i18n['new-project'] : i18n['editing'] + ' ' + projectManagementBacking.selectedProject.name}">
+		<alloy:fieldset legend="#{(empty projectManagementBacking.selectedProject.name) ? i18n['new-project'] : i18n['editing-project']}">
 
 			<alloy:field id="projectNameField" label="#{i18n['name']}">
 				<alloy:inputText id="projectName" required="true"
@@ -23,18 +23,21 @@
 				label="#{i18n['description']}">
 				<alloy:inputText id="projectDescription" required="false"
 					value="#{projectManagementBacking.selectedProject.description}" />
+				<alloy:message for="projectDescription"/>
 			</alloy:field>
 
 			<alloy:field id="projectStartdateField" label="#{i18n['startdate']}">
-				<alloy:inputDate id="projectStartdate" required="false"
-					pattern="yyyy-MMM-dd hh:mm a Z" showOn="both"
+				<alloy:inputDate id="projectStartdate" required="true" binding="#{projectStartdate}"
+					locale="#{projectManagementBacking.locale}"
 					value="#{projectManagementBacking.selectedProject.startDate}" />
+				<alloy:message for="projectStartdate"/>
 			</alloy:field>
 
 			<alloy:field id="projectEnddateField" label="#{i18n['enddate']}">
-				<alloy:inputDate id="projectEnddate" required="false"
-					pattern="yyyy-MMM-dd hh:mm a Z" showOn="both"
+				<alloy:inputDate id="projectEnddate"
+					locale="#{projectManagementBacking.locale}"
 					value="#{projectManagementBacking.selectedProject.endDate}" />
+				<alloy:message for="projectEnddate"/>
 			</alloy:field>
 		</alloy:fieldset>
 

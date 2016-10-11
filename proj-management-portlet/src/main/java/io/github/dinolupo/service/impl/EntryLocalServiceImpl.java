@@ -35,7 +35,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link io.github.dinolupo.service.EntryLocalServiceUtil} to access the entry local service.
      */
 	
-
+	
 	@Override
 	public List<Entry> getEntrys(long projectId, long groupId) throws SystemException {
 

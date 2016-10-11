@@ -4,7 +4,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import com.liferay.faces.portal.context.LiferayFacesContext;
+import com.liferay.faces.portal.context.LiferayPortletHelper;
+import com.liferay.faces.portal.context.LiferayPortletHelperFactory;
 
 import io.github.dinolupo.model.Entry;
 import io.github.dinolupo.service.EntryLocalServiceUtil;
@@ -20,11 +21,11 @@ public class EntryBacking extends AbstractBacking {
 	public void setProjectManagementBacking(ProjectManagementBacking projMan) {
 		this.projectManagementBacking = projMan;
 	}
+
 	
 	public void add() {
 	    Entry entry = EntryUtil.create(0L);
-	    LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
-	    entry.setGroupId(liferayFacesContext.getScopeGroupId());
+	    entry.setGroupId(LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId());
 	    entry.setProjectId(projectManagementBacking.getSelectedProject().getProjectId());
 	    projectManagementBacking.setSelectedEntry(entry);
 	    projectManagementBacking.editEntry();
@@ -37,9 +38,10 @@ public class EntryBacking extends AbstractBacking {
 	public void save() {
 
 	    Entry entry = projectManagementBacking.getSelectedEntry();
-	    LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
-	    entry.setCompanyId(liferayFacesContext.getCompanyId());
-	    entry.setUserId(liferayFacesContext.getUserId());
+	    
+	    LiferayPortletHelper liferayPortletHelper = LiferayPortletHelperFactory.getLiferayPortletHelperInstance();
+	    entry.setCompanyId(liferayPortletHelper.getCompanyId());
+	    entry.setUserId(liferayPortletHelper.getUserId());
 
 	    try {
 
