@@ -45,7 +45,6 @@ public class ProjectManagementBacking extends AbstractBacking {
 	
 	public void add() {
 	    setOriginalProject(getSelectedProject());
-
 	    Project project = ProjectUtil.create(0L);
 	    project.setGroupId(LiferayPortletHelperFactory.getLiferayPortletHelperInstance().getScopeGroupId());
 	    setSelectedProject(project);
@@ -305,6 +304,52 @@ public class ProjectManagementBacking extends AbstractBacking {
 	public void setSelectedEntry(Entry selectedEntry) {
 	    this.selectedEntry = selectedEntry;
 	}
+
+	// -----------------------------------------------------------------------------------------
+	//				PERMISSION 	SETTINGS
+	// -----------------------------------------------------------------------------------------
+	
+	public static final String MODEL 			= "io.github.dinolupo.model";
+	public static final String MODEL_ENTRY 		= "io.github.dinolupo.model.Entry";
+	public static final String MODEL_PROJECT 	= "io.github.dinolupo.model.Project";
+
+	private Boolean hasAddPermission;
+	private Boolean hasViewPermission;
+	
+	public Boolean getHasAddPermission() {
+
+	    if (hasAddPermission == null) {
+	        LiferayPortletHelper liferayPortletHelper = LiferayPortletHelperFactory.getLiferayPortletHelperInstance();
+	        long scopeGroupId = liferayPortletHelper.getScopeGroupId();
+	        hasAddPermission = liferayPortletHelper.getThemeDisplay().getPermissionChecker().hasPermission(
+	            scopeGroupId, MODEL, scopeGroupId, "ADD_PROJECT"
+	            );
+	    }
+
+	    return hasAddPermission;
+	}
+
+	public void setHasAddPermission(Boolean hasAddPermission) {
+	    this.hasAddPermission = hasAddPermission;
+	}
+
+	public Boolean getHasViewPermission() {
+
+	    if (hasViewPermission == null) {
+	        LiferayPortletHelper liferayPortletHelper = LiferayPortletHelperFactory.getLiferayPortletHelperInstance();
+	        long scopeGroupId = liferayPortletHelper.getScopeGroupId();
+	        hasViewPermission = liferayPortletHelper.getThemeDisplay().getPermissionChecker().hasPermission(
+	            scopeGroupId, MODEL_PROJECT, scopeGroupId, "VIEW"
+	            );
+	    }
+
+	    return hasViewPermission;
+	}
+
+	public void setHasViewPermission(Boolean hasViewPermission) {
+	    this.hasViewPermission = hasViewPermission;
+	}
+	
 	
 	
 }

@@ -16,6 +16,14 @@
     border-bottom: 1px solid #ddd;
 }
 
+.command_link {
+	text-decoration: none !important;
+}
+
+.command_link:hover {
+	color: #006AAA !important;
+}
+
 .project_tab_active {
     border-left: 1px solid #ddd;
     border-top: 1px solid #ddd;

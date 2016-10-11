@@ -33,6 +33,7 @@
             <action-key>ADD_ENTRY</action-key>
         </supports>
         <site-member-defaults>
+            <action-key>ADD_PROJECT</action-key>
             <action-key>ADD_ENTRY</action-key>
         </site-member-defaults>
         <guest-defaults />
@@ -92,6 +93,5 @@
         </guest-unsupported>
     </permissions>
 </model-resource>
-
 
 </resource-action-mapping>

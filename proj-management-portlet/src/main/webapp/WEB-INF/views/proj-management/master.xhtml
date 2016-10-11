@@ -20,6 +20,7 @@
 					rendered="#{project.projectId == projectManagementBacking.selectedProject.projectId}"
 					value="#{project.name}" /> 
 				<alloy:commandLink
+					class="command_link"
 					action="#{projectManagementBacking.select(project)}"
 					immediate="true"
 					rendered="#{project.projectId != projectManagementBacking.selectedProject.projectId}"
@@ -33,17 +34,17 @@
 		
 		<alloy:buttonRow>
 			
-			<alloy:commandButton action="#{projectManagementBacking.add}" styleClass="btn btn-primary" value="#{i18n['add-project']}" render="@all" />
+			<alloy:commandButton action="#{projectManagementBacking.add}" rendered="#{projectManagementBacking.hasAddPermission}" styleClass="btn btn-primary" value="#{i18n['add-project']}" render="@all" />
 			
-			<alloy:commandButton action="#{projectManagementBacking.editSelectedProject}" styleClass="btn btn-primary" value="#{i18n['edit-project']}" render="@all" />
+			<alloy:commandButton action="#{projectManagementBacking.editSelectedProject}" rendered="#{projectManagementBacking.hasAddPermission}" styleClass="btn btn-primary" value="#{i18n['edit-project']}" render="@all" />
 			
-			<alloy:commandButton action="#{entryBacking.add}" styleClass="btn btn-primary" value="#{i18n['add-entry']}" render="@all"/>
+			<alloy:commandButton action="#{entryBacking.add}" styleClass="btn btn-primary" rendered="#{projectManagementBacking.hasAddPermission}" value="#{i18n['add-entry']}" render="@all"/>
 			
-			<alloy:commandButton action="#{projectManagementBacking.removeAllProjects}" styleClass="btn btn-danger" value="#{i18n['delete-all-projects']}">
+			<alloy:commandButton action="#{projectManagementBacking.removeAllProjects}" rendered="#{projectManagementBacking.hasAddPermission}" styleClass="btn btn-danger" value="#{i18n['delete-all-projects']}">
 				<f:ajax render="@all" />
 			</alloy:commandButton>
 
-			<alloy:commandButton action="#{projectManagementBacking.removeAllEntries}" styleClass="btn btn-danger" value="#{i18n['delete-all-entries']}">
+			<alloy:commandButton action="#{projectManagementBacking.removeAllEntries}" rendered="#{projectManagementBacking.hasAddPermission}" styleClass="btn btn-danger" value="#{i18n['delete-all-entries']}">
 				<f:ajax render="@all" />
 			</alloy:commandButton>
 		
